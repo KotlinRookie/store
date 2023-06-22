@@ -243,36 +243,50 @@
 			</div>
 		</footer>
 		<!--页脚结束-->
-
 		<script type="text/javascript">
 		$(document).ready(function(){
-			let avatar = $.cookie("avatar")
-			$("#img-avatar").attr("src",avatar);  
+			let avatar = $.cookie("avatar");
+			//将cookie中的值重新获取出来，设置到头像的src属性
+			$("#img-avatar").attr("src",avatar);
 		});
 		
-		
-			$("#btn-change-avatar").click(function() {
+			$("#btn-change-avatar").click(function(){
 				$.ajax({
 					url: "/users/change_avatar",
 					type: "POST",
+				    /*
+					* serialize()不能解析文件类型的数据
+					* serialize()是将控件类数据(text\password\radio\checkbox)等提交
+					*--------------------------------------------------------
+					* FormData
+					* 将表单中数据保持原有的结构进行数据的条件。 
+					* new FormData($("#form")[0]);
+					*/
 					data: new FormData($("#form-change-avatar")[0]),
+					// 由于Ajax默认处理和提交数据是按照字符串进行处理，所以提交文件格式时需要关闭这两个默认的功能
+					processData: false,	//处理数据的形式,关闭以字符串处理数据形式
+					contentType: false, //提交数据的形式，关闭以字符串处理数据形式
 					dataType: "JSON",
-					processData: false, // processData处理数据
-					contentType: false, // contentType发送数据的格式
-					success: function(json) {
-						if (json.state == 200) {
-							$("#img-avatar").attr("src", json.data);
-							alert("上传头像成功");
-						} else {
-							alert("修改失败！" + json.message);
+					success: function(json){
+						if(json.state == 200){
+							// 将服务器端返回的头像地址设置img标签的src属性上
+							// attr，给一个已存在的属性上设置一个新的值
+							$("#img-avatar").attr("src",json.data);
+							// 将头像保存在cookie中
+							// $.cookie();
+							$.cookie("avatar",json.data,{expires:7});
+							alert("头像修改成功");
+						}else if(json.state == 6002){
+							alert("文件类型不支持");
+						}else{
+							alert("头像修改失败");
 						}
 					},
-					error: function(xhr) {
-						alert("您的登录信息已经过期，请重新登录！HTTP响应码：" + xhr.status);
-						location.href = "login.html";
+					error: function(xhr){
+						alert("修改头像时产生未知的异常" + xhr.message);
 					}
-				});
-			});
+				})
+			})
 		</script>
 	</body>
-</html> 
+</html>

@@ -50,7 +50,7 @@ public class UserController extends BaseController{
 	@RequestMapping("reg")
 	public JsonResult<Void> reg(User user) {
 		userService.reg(user);
-		return new JsonResult<>(OK,REG);
+		return new JsonResult<>(OK);
 	}
 
 	@RequestMapping("login")
@@ -62,7 +62,7 @@ public class UserController extends BaseController{
 		// 获取session中绑定的数据
 		System.out.println(getuidFromSession(session));
 		System.out.println(getUsernameFromSession(session));
-		return new JsonResult<User>(OK,LOGIN,data);
+		return new JsonResult<User>(OK,data);
 	}
 	
 	@RequestMapping("change_password")
@@ -109,10 +109,10 @@ public class UserController extends BaseController{
 	public static final List<String> AVATAR_TYPE= new ArrayList<>();
 	// 集合的初始化
 	static {
-		AVATAR_TYPE.add("images/jpeg");//包含了jpg
-		AVATAR_TYPE.add("images/png");
-		AVATAR_TYPE.add("images/bmp");
-		AVATAR_TYPE.add("images/gif");
+		AVATAR_TYPE.add("image/jpeg");//包含了jpg
+		AVATAR_TYPE.add("image/png");
+		AVATAR_TYPE.add("image/bmp");
+		AVATAR_TYPE.add("image/gif");
 	}
 	
 	@RequestMapping("change_avatar")
@@ -135,14 +135,17 @@ public class UserController extends BaseController{
 		
 		//上传的文件目录为: 项目根目录/upload/文件
 		//获取项目目录结构 ※upload文件夹此时还不存在
-		String parent = session.
-				getServletContext().getRealPath("upload");
+
+		String parent = session. getServletContext().getRealPath("upload");
+
+
 		
 		//查看是否存在 upload 目录，如果没有则创建目录
 		File dir = new File(parent);
 		if(!dir.exists()) {	// 判断目录路径是否存在
 			dir.mkdirs();	// 创建目录
 		}
+		System.out.println(parent);
 		
 		// 获取文件名称，使用UUID更改用户上传文件名
 		String originalFilename = file.getOriginalFilename();
@@ -179,6 +182,7 @@ public class UserController extends BaseController{
 		//返回头像的路径（保存相对路径） /upload/xxx.png
 		String avatar = "/upload/" + filename;
 		userService.changeAvatar(uid, avatar, username);
+		System.out.println(avatar);
 		//返回用户头像的路径给前端页面，用于头像的展示使用
 		return new JsonResult<>(OK,avatar);
 	}

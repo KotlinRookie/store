@@ -153,6 +153,9 @@
 					success: function(json){
 						if(json.state == 200){
 							alert("登录成功,请点击按钮跳转到登录界面")
+							//将服务器端返回的头像设置到cookie中
+							// $.cookie(key,value,time)	cookie存活时间的的单位为天
+							$.cookie("avatar",json.data.avatar,{expires:7});
 							location.href = "index.html"
 						}else if(json.state == 4001){
 							alert("用户名不能为空")

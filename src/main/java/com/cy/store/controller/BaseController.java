@@ -31,10 +31,6 @@ public class BaseController {
 	 */
 	public static final int OK = 200;
 	
-	public static final String REG = "用户注册成功";
-	
-	public static final String LOGIN = "登陆成功";
-	
 	//请求处理方法，这个方法的返回值就是需要传递给前端的数据
 	//自动将异常对象传递给此方法的参数列表上
 	//当前项目中产生了异常，被统一拦截到此方法中，这个方法此时就是请求处理方法，方法的返回值直接返回给前端
