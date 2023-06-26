@@ -15,6 +15,7 @@ import com.cy.store.controller.ex.FileSizeException;
 import com.cy.store.controller.ex.FileStateException;
 import com.cy.store.controller.ex.FileTypeException;
 import com.cy.store.controller.ex.FileUploadException;
+import com.cy.store.service.ex.AddressCountLimitException;
 import com.cy.store.service.ex.InsertException;
 import com.cy.store.service.ex.PasswordNotMatchException;
 import com.cy.store.service.ex.ServiceException;
@@ -49,6 +50,9 @@ public class BaseController {
 		}else if(e instanceof UserPasswordException){
 			result.setState(4002);
 			result.setMessage("用户密码不符合规范");
+		}else if(e instanceof AddressCountLimitException){
+			result.setState(4003);
+			result.setMessage("用户收货地址超标的异常");
 		}else if(e instanceof InsertException) {
 			result.setState(5000);
 			result.setMessage("注册时产生未知的异常");
