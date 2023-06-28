@@ -1,8 +1,11 @@
 package com.cy.store.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +25,23 @@ public class AddressController extends BaseController {
 		Integer uid = getuidFromSession(session);
 		String username = getUsernameFromSession(session);
 		addressService.addNewAddress(uid, username, address);
+		return new JsonResult<>(OK);
+	}
+	
+	@RequestMapping({"/",""})
+	public JsonResult<List<Address>> getByUid(HttpSession session){
+		Integer uid = getuidFromSession(session);
+		List<Address> data = addressService.getByUid(uid);
+		return new JsonResult<>(OK,data);
+	}
+	
+	// RestFul风格的请求编写
+	@RequestMapping("{aid}/set_default")
+	public JsonResult<Void> setDefault(@PathVariable("aid") Integer aid,
+									   HttpSession session ){
+		Integer uid = getuidFromSession(session);
+		String username = getUsernameFromSession(session);
+		addressService.setDefault(aid, uid, username);
 		return new JsonResult<>(OK);
 	}
 }

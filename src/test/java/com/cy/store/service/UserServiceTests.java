@@ -21,46 +21,5 @@ public class UserServiceTests {
 	@Autowired
 	private IUserService iUserService;
 
-	
-	 @Test 
-	 public void reg() {
-		 User user = new User();
-		 user.setUsername("测试用户4");
-		 user.setPassword("abc123");
-		 iUserService.reg(user);
-	 }
-	 
-	 @Test
-	 public void login() {
-		 User user = new User();
-		 user.setUsername("测试用户2");
-		 user.setPassword("abc123");
-		 User userData = iUserService.login(user.getUsername(), user.getPassword());
-		 System.out.println(userData);
-	 }
-	 
-	 @Test
-	 public void changePassword() {
-		 iUserService.changePassword(40,"测试担当","test001","test002");
-	 }
-	 
-	 @Test
-	 public void getByUid() {
-		 User user = iUserService.getByUid(40);
-		 System.out.println(user);
-	 }
-	 
-	 @Test
-	 public void changeInfo() {
-		 User user = new User();
-		 user.setPhone("09011112222");
-		 user.setEmail("999999999@qq.com");
-		 user.setGender(0);
-		 iUserService.changeInfo(40, "测试用户", user);
-	 }
-	 
-	 @Test
-	 public void changeAvatar() {
-		 iUserService.changeAvatar(40, "C:\\img\\b.png", "管理员");
-	 }
+
 }

@@ -2,12 +2,14 @@ package com.cy.store.mapper;
 
 
 
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.startsWith;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
-
+import org.junit.validator.PublicClassValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -23,7 +25,11 @@ public class AddressMapperTests {
 	@Autowired
 	private AddressMapper addressMapper;
 
-
+	@Test
+	public void aaa() {
+		Integer updatenonDefault = addressMapper.updatenonDefault(1);
+		System.out.println(updatenonDefault);
+	}
 
 
 }

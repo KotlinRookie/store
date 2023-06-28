@@ -1,6 +1,7 @@
 package com.cy.store.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.cy.store.entity.Address;
+import com.cy.store.entity.District;
 import com.cy.store.entity.User;
 
 
@@ -16,13 +18,11 @@ import com.cy.store.entity.User;
 //需要传递一个参数，必须是SpringRunner的实例(class)类型
 //@RunWith(SpringRunner.class)
 
-public class AddressServiceTests {
+public class DistrictServiceTests {
 	
 	@Autowired
-	private IAddressService addressService;
+	private IDistrictService districtService;
 	
-	@Test
-	public void setDefault() {
-		addressService.setDefault(47, 40, "管理员");
-	}
+
+
 }
