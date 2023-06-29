@@ -21,8 +21,5 @@ public class AddressServiceTests {
 	@Autowired
 	private IAddressService addressService;
 	
-	@Test
-	public void setDefault() {
-		addressService.setDefault(47, 40, "管理员");
-	}
+	
 }

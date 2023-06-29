@@ -47,7 +47,7 @@ public interface AddressMapper {
 	Integer updatenonDefault(Integer uid);
 	
 	/**
-	 * 根据用户的uid来修改用户的收货地址设置为默认
+	 * 根据用户的aid来修改用户的收货地址设置为默认
 	 * @param aid 用户id
 	 * @param modifieduser 更新用户
 	 * @param modifiedTime 更新时间
@@ -56,4 +56,28 @@ public interface AddressMapper {
 	Integer updateDefaultByAid(Integer aid,
 							   String modifiedUser,
 							   Date modifiedTime);
+	
+	/**
+	 * 根据收货地址id来删除收货地址数据
+	 * @param aid 收货地址id
+	 * @return 受影响的行数
+	 */
+	Integer deleteByAid(Integer aid);
+	
+	/**
+	 * 根据用户uid查询当前用户最后一次被修改的收货地址数据
+	 * @param uid 用户id
+	 * @return 收货地址数据
+	 */
+
+	Address findLastModified(Integer uid);
+	
+	/**
+	 * 根据用户的aid来修改用户收货地址
+	 * @param aid 用户aid
+	 * @param modifiedUser 修改者
+	 * @param modifiedTime 修改时间
+	 * @return
+	 */
+	Integer updateAddress(Address address);
 }

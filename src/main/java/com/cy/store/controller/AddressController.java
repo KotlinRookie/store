@@ -44,4 +44,22 @@ public class AddressController extends BaseController {
 		addressService.setDefault(aid, uid, username);
 		return new JsonResult<>(OK);
 	}
+	
+	@RequestMapping("{aid}/delete")
+	public JsonResult<Void> delete(@PathVariable("aid") Integer aid,
+									HttpSession session){
+		Integer uid = getuidFromSession(session);
+		String username = getUsernameFromSession(session);
+		addressService.delete(aid, uid, username);
+		return new JsonResult<>(OK);
+	}
+	
+	
+	 @RequestMapping("{aid}/find_by_aid") 
+	 public JsonResult<Address> findByAid(@PathVariable("aid") Integer aid, HttpSession session){ 
+		 Integer uid = getuidFromSession(session); 
+		 Address data = addressService.findByAid(aid,uid); 
+		 return new JsonResult<Address>(OK,data); 
+	}
+
 }

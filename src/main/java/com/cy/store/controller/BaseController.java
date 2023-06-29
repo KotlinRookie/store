@@ -18,8 +18,10 @@ import com.cy.store.controller.ex.FileUploadException;
 import com.cy.store.service.ex.AccessDeniedException;
 import com.cy.store.service.ex.AddressCountLimitException;
 import com.cy.store.service.ex.AddressNotFountException;
+import com.cy.store.service.ex.DeleteException;
 import com.cy.store.service.ex.InsertException;
 import com.cy.store.service.ex.PasswordNotMatchException;
+import com.cy.store.service.ex.ProductNotFoundException;
 import com.cy.store.service.ex.ServiceException;
 import com.cy.store.service.ex.UpdateException;
 import com.cy.store.service.ex.UserNotFoundException;
@@ -61,6 +63,9 @@ public class BaseController {
 		}else if(e instanceof AccessDeniedException){
 			result.setState(4005);
 			result.setMessage("收货地址数据非法访问的异常");
+		}else if(e instanceof ProductNotFoundException){
+			result.setState(4006);
+			result.setMessage("商品数据不存在的异常");
 		}else if(e instanceof InsertException) {
 			result.setState(5000);
 			result.setMessage("注册时产生未知的异常");
@@ -73,6 +78,9 @@ public class BaseController {
 		}else if(e instanceof UpdateException){
 			result.setState(5003);
 			result.setMessage("更新数据时产生未知的异常");
+		}else if(e instanceof DeleteException){
+			result.setState(5004);
+			result.setMessage("删除数据时产生未知的异常");
 		}else if(e instanceof FileEmptyException){
 			result.setState(6000);
 			result.setMessage("文件为空的异常");

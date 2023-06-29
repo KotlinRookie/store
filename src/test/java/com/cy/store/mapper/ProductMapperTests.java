@@ -3,6 +3,7 @@ package com.cy.store.mapper;
 
 
 import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.longThat;
 import static org.mockito.ArgumentMatchers.startsWith;
 
 import java.util.Date;
@@ -15,26 +16,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 import com.cy.store.entity.Address;
+import com.cy.store.entity.Product;
 import com.cy.store.service.impl.AddressServiceImpl;
 
 @SpringBootTest
 //@RunWith:表示启动这个单元测试类(自己新创建的测试类没有这个注解，单元测试类不能够运行)
 //需要传递一个参数，必须是SpringRunner的实例(class)类型
 //@RunWith(SpringRunner.class)
-public class AddressMapperTests {
+public class ProductMapperTests {
 
 	@Autowired
-	private AddressMapper addressMapper;
-
+	private ProductMapper productMapper;
+	
+	
 	@Test
-	public void updateAddress() {
-		Address address= new Address();
-		address.setAid(59);
-		address.setName("测试");
-		address.setModifiedTime(new Date());
-		Integer updateAddress = addressMapper.updateAddress(address);
-		System.out.println(updateAddress);
+	public void findHostList() {
+		List<Product> list = productMapper.findHotList();
+		for (Product product : list) {
+			System.out.println(product);
+		}
 	}
+
 
 
 }

@@ -68,5 +68,25 @@
 			modified_time=#{modifiedTime} 
 		WHERE aid=#{aid}
 	</update>
+	
+	<delete id="deleteByAid">
+		DELETE FROM t_address WHERE aid=#{aid}
+	</delete>
+	
+	<select id="findLastModified" resultMap="AddressEntityMap">
+		SELECT * FROM t_address WHERE uid=#{uid} 
+		ORDER BY modified_time DESC limit 0,1 
+	</select>
+	
+	<update id="updateAddress">
+		UPDATE t_address
+		SET 
+		uid=#{uid},name=#{name},province_name=#{provinceName},province_code=#{provinceCode},city_name=#{cityName},
+		city_code=#{cityCode},area_name=#{areaName},area_code=#{areaCode},zip=#{zip},address=#{address},phone=#{phone},
+		tel=#{tel},tag=#{tag},is_default=#{isDefault},created_user=#{createdUser},created_time=#{createdTime},
+		modified_user=#{modifiedUser},modified_time=#{modifiedTime}
+		WHERE
+		aid=#{aid}
+	</update>
 
 </mapper>
