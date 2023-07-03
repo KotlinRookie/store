@@ -18,6 +18,7 @@ import com.cy.store.controller.ex.FileUploadException;
 import com.cy.store.service.ex.AccessDeniedException;
 import com.cy.store.service.ex.AddressCountLimitException;
 import com.cy.store.service.ex.AddressNotFountException;
+import com.cy.store.service.ex.CartNotFoundException;
 import com.cy.store.service.ex.DeleteException;
 import com.cy.store.service.ex.InsertException;
 import com.cy.store.service.ex.PasswordNotMatchException;
@@ -66,6 +67,9 @@ public class BaseController {
 		}else if(e instanceof ProductNotFoundException){
 			result.setState(4006);
 			result.setMessage("商品数据不存在的异常");
+		}else if(e instanceof CartNotFoundException){
+			result.setState(4007);
+			result.setMessage("购物车数据不存在的异常");
 		}else if(e instanceof InsertException) {
 			result.setState(5000);
 			result.setMessage("注册时产生未知的异常");

@@ -249,7 +249,7 @@
 			</div>
 		</footer>
 		<!--页脚结束-->
-		<script type="text/javascript">
+<!-- 		<script type="text/javascript">
 			$(document).ready(function() {
 				showAddressList();
 				showCartList();
@@ -346,7 +346,54 @@
 					}
 				});
 			});
+		</script> -->
+		<script type="text/javascript">
+			 $(document).ready(function(){
+				 showCartList();
+			 })
+			 
+			 /*展示购物车列表数据*/
+			 function showCartList(){
+				//清空tbody标签中的数据
+				$("#cart-list").empty();
+				$.ajax({
+					url: "/carts/list",
+					type: "GET",
+					// substr(1),截取url的?后面的字符串
+					data: location.search.substr(1),
+					dataType: "JSON",
+					success: function(json){
+						if(json.state == 200){
+							let list = json.data;
+							let allCount = 0;
+							let allPrice = 0;
+							for(let i=0; i<list.length; i++){
+								let tr = '<tr>'
+									+ '<td><img src="..#{image}collect.png" class="img-responsive" /></td>'
+									+ '<td><input type="hidden" name="cids" value="#{cid}" />#{title}</td>'
+									+ '<td>¥<span>#{realPrice}</span></td>'
+									+ '<td>#{num}</td>'
+									+ '<td>¥<span>#{totalPrice}</span></td>'
+								    + '</tr>';
+								    tr = tr.replace(/#{image}/g,list[i].image);
+								    tr = tr.replace(/#{title}/g,list[i].title);
+								    tr = tr.replace(/#{realPrice}/g,list[i].price);
+								    tr = tr.replace(/#{num}/g,list[i].num);
+								    tr = tr.replace(/#{totalPrice}/g,list[i].price * list[i].num);    		
+								    $("#cart-list").append(tr);
+								    
+								    allCount += list[i].num;
+								    allPrice += list[i].price * list[i].num;
+							}
+							$("#all-count").html(allCount);
+							$("#all-price").html(allPrice);
+						}		
+					},
+					error: function(xhr){
+						alert("购物车列表数据加载产生未知的异常," + xhr.message)
+					}
+				})
+			 }
 		</script>
 	</body>
-
 </html>

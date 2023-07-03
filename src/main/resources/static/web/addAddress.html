@@ -145,7 +145,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label"><span class="txtred">*</span>收货人：</label>
 								<div class="col-md-8">
-									<input id="xingming" name="name" type="text" class="form-control" placeholder="请输入收货人姓名">
+									<input name="name" type="text" class="form-control" placeholder="请输入收货人姓名">
 								</div>
 							</div>
 							<div class="address_content" data-toggle="distpicker">
@@ -166,30 +166,30 @@
 									</div>
 									<label class="col-md-2 control-label">邮政编码：</label>
 									<div class="col-md-3">
-										<input id="youbian" name="zip" type="text" class="form-control" placeholder="请输入邮政编码">
+										<input name="zip" type="text" class="form-control" placeholder="请输入邮政编码">
 									</div>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-2 control-label"><span class="txtred">*</span>详细地址：</label>
 								<div class="col-md-8">
-									<textarea id="shouhuodizhi" name="address" class="form-control" rows="3" placeholder="输入详细的收货地址，小区名称、门牌号等"></textarea>
+									<textarea name="address" class="form-control" rows="3" placeholder="输入详细的收货地址，小区名称、门牌号等"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-2 control-label"><span class="txtred">*</span>手机：</label>
 								<div class="col-md-3">
-									<input id="shouji" name="phone" type="text" class="form-control" placeholder="请输入手机号码">
+									<input name="phone" type="text" class="form-control" placeholder="请输入手机号码">
 								</div>
 								<label class="col-md-2 control-label">固话：</label>
 								<div class="col-md-3">
-									<input id="guhua" name="tel" type="text" class="form-control" placeholder="请输入固定电话号码">
+									<input name="tel" type="text" class="form-control" placeholder="请输入固定电话号码">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-2 control-label">地址类型：</label>
 								<div class="col-md-8">
-									<input id="leixing" name="tag" type="text" class="form-control" placeholder="请输入地址类型，如：家、公司或者学校">
+									<input name="tag" type="text" class="form-control" placeholder="请输入地址类型，如：家、公司或者学校">
 								</div>
 							</div>
 							<div class="form-group">
@@ -289,79 +289,38 @@
 			</div>
 		</footer>
 		<!--页脚结束-->
-		<script type="text/javascript" src="../js/jquery-getUrlParam.js"></script>
 		<script type="text/javascript">
-		let aid = $.getUrlParam("aid");
-			//填充省市区信息
-			// option不会把标签内的值作为默认值，option的值只认value
-			let defaultOption = "<option value='0'>---- 请选择 ----</option>"
-			// 自动加载
+			// value属性用于表示当前这个区域的code值
+			let defaultOption = "<option value='0'>---- 请选择 ----</option>";	
 			$(document).ready(function(){
-				// 调用定义好的方法
 				showProvinceList();
-				// 市和区的下拉列表，设置为默认的 ---- 请选择 ----
-				$("#city-list").append(defaultOption);
-				$("#area-list").append(defaultOption);
-			})
+				
+				// 设置默认的“请选择”的值，作为控件的默认值
+				$("#city-list").appeng(defaultOption);
+				$("#area-list").appeng(defaultOption);
+			});
 			
-			// 监听api - change
-			// change()函数用于监听某个控件是否发生改变，一旦发生改变就会触发参数的函数
-			// 需要传递一个function(){}
-			// 省的值发生变化，拿到省的code作为市的parent
-			$("#province-list").change(function(){
-				// 先获取到行政区父代码
-				let parent = $("#province-list").val();
-				
-				//清空selectxia
-				$("#city-list").empty();
-				$("#area-list").empty();
-				// 重新填充默认值
-				$("#city-list").append(defaultOption);
-				$("#area-list").append(defaultOption);
-				
-				if(parent == 0){
-					return;
-				}
-				
-				$.ajax({
-					url: "/districts",
-					type: "POST",
-					data: "parent=" + parent,
-					dataTyoe: "JSON",
-					success: function(json){
-						if(json.state == 200){
-							let list = json.data;
-							for(let i=0; i<list.length; i++){
-								let opt = 
-									"<option value='"+list[i].code+"'>"+list[i].name+"</option>";
-								$("#city-list").append(opt);
-							}						
-						}else{
-							alert("城市信息加载失败")
-						}
-					}
-				})
-			})
 			
-				// 监听城市的值的变化，使区/县的值发生变化
+			// 区的列表展示
 			$("#city-list").change(function(){
-				// 先获取到行政区父代码
+
+				//  表示清空select下拉列表中的所有option元素
+				$("#area-list").empty();
+				// 填充默认值
+				$("#area-list").append(defaultOption);
+				
+				// 获取行政区父代码
 				let parent = $("#city-list").val();
 				
-				//清空selectxia
-				$("#area-list").empty();
-				// 重新填充默认值
-				$("#area-list").append(defaultOption);
-				
 				if(parent == 0){
 					return;
 				}
 				
 				$.ajax({
 					url: "/districts",
-					type: "POST",
+					type: "GET",
 					data: "parent=" + parent,
-					dataTyoe: "JSON",
+					dataType: "JSON",
 					success: function(json){
 						if(json.state == 200){
 							let list = json.data;
@@ -369,16 +328,59 @@
 								let opt = 
 									"<option value='"+list[i].code+"'>"+list[i].name+"</option>";
 								$("#area-list").append(opt);
-							}						
+							}
 						}else{
-							alert("区/县信息加载失败")
+							alert("区县信息加载失败");
 						}
 					}
-				})
-			})
+					
+				});
+			});
+
 			
 			
-			// 定义省的下拉列表的方法 - showProvinceList
+
+			// change（）函数用于监测某个控件是否发生改变，一旦发生改变就会触发参数的函数
+			// 需要传递一个function（）
+			$("#province-list").change(function(){
+				// 获取行政区父代码
+				let parent = $("#province-list").val();
+				//  表示清空select下拉列表中的所有option元素
+				$("#city-list").empty();
+				$("#area-list").empty();
+				// 填充默认值
+				$("#city-list").append(defaultOption);
+				$("#area-list").append(defaultOption);
+				
+				if(parent == 0){
+					return;
+				}
+				
+				$.ajax({
+					url: "/districts",
+					type: "GET",
+					data: "parent=" + parent,
+					dataType: "JSON",
+					success: function(json){
+						if(json.state == 200){
+							let list = json.data;
+							for(let i=0; i<list.length; i++){
+								let opt = 
+									"<option value='"+list[i].code+"'>"+list[i].name+"</option>";
+								$("#city-list").append(opt);
+							}
+						}else{
+							alert("城市信息加载失败");
+						}
+					}
+					
+				});
+			});
+			
+			
+			
+		
+			// 省的下拉列表展示
 			function showProvinceList(){
 				$.ajax({
 					url: "/districts",
@@ -394,89 +396,32 @@
 								$("#province-list").append(opt);
 							}
 						}else{
-							alert("省/直辖市数据加载失败")
+							alert("省/直辖市信息加载失败");
 						}
 					}
-				})
+					
+				});
 			}
 		
-	    
-		$(document).ready(function(){
-			showAddress(aid);
-		})
-
-		
-		// 修改用户地址数据展示
-		function showAddress(aid){
-			$.ajax({
-				url: "/addresses/" + aid + "/find_by_aid",
-				type: "POST",
-				dataType: "JSON",
-				success: function(json){
-					if(json.state == 200){ 
-				        $("#xingming").val(json.data.name);
-				        $("#province-list").find("option[value='" + json.data.provinceCode + "']").attr("selected", true);
-				        $("#province-list").trigger("change");
-				        /* $("#city-list").find("option[value='" + json.data.cityCode + "']").attr("selected", true); */
-				          var cityValue = $('#city-list').val();
-						  // 将城市选项的值设置为指定元素的文本内容
-						  $('#city-value').text(cityValue);
-				        $("#city-list").trigger("change");
-				        $("#area-list").find("option[value='" + json.data.areaCode + "']").attr("selected", true);
-				        $("#youbian").val(json.data.zip);
-				        $("#shouhuodizhi").val(json.data.address);
-						$("#shouji").val(json.data.phone);
-						$("#guhua").val(json.data.tel);
-						$("#leixing").val(json.data.tag);
-					}
-				},
-				error: function(xhr){
-					
-				}
-			})
-		}
-
-		// 新增地址
-		$(document).ready(function() {
-	  		// 监听保存按钮的点击事件
-		  $("#btn-add-new-address").click(function() {
-		    // 获取用户填写的收货地址信息
-		    var name = $("input[name='name']").val();
-		    var province = $("select[name='provinceCode']").val();
-		    var city = $("select[name='cityCode']").val();
-		    var area = $("select[name='areaCode']").val();
-		    var address = $("textarea[name='address']").val();
-		    var phone = $("input[name='phone']").val();
-		    
-		    // 检查收货地址是否为空
-		    if (name === "" || province === "" || city === "" || area === "" || address === "" || phone === "") {
-		      // 如果收货地址为空，弹出提示框
-		      alert("必填信息不能为空");
-		    } else {
-		      // 如果收货地址不为空，保存到数据库或执行其他操作
-		      // TODO: 在这里添加保存到数据库的代码
-					$.ajax({
-						url:"/addresses/add_new_address",
-						type: "POST",
-						data: $("#form-add-new-address").serialize(),
-						dataType: "JSON",
-						success: function(json){
-							if(json.state == 200){
-								alert("新增收货地址成功")
-								// 刷新当前页面
-								location.href = "/web/address.html"
-							}else{
-								alert("新增收货地址失败")
-							}
-						},
-						error: function(xhr){
-							alert("新增收货地址时产生未知的异常" + xhr.message)
+			$("#btn-add-new-address").click(function(){
+				$.ajax({
+					url: "/addresses/add_new_address",
+					type: "POST",
+					data: $("#form-add-new-address").serialize(),
+					dataType: "JSON",
+					success: function(json){
+						if(json.state == 200){
+							alert("新增收货地址成功");
+						}else{
+							alert("新增收货地址失败");
 						}
-					})
-		    	}
-		  });
-		});
-
+					},
+					error: function(xhr){
+						alert("新增收货地址时产生位置的错误" + xhr.status);
+					}
+				});
+			});
 		</script>
 	</body>
+
 </html>
